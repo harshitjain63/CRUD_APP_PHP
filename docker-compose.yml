@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  php-apache:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php-apache-container
+    ports:
+      - "8080:80"  # Maps the container port 80 to host port 8080
+    volumes:
+      - .:/var/www/html  # Sync your app files
+    depends_on:
+      - db  # Ensures that MySQL starts before the PHP container
+    environment:
+      - MYSQL_HOST=db  # Reference to MySQL service
+
+  db:
+    image: mysql:8.0
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: your_mysql_root_password
+      MYSQL_DATABASE: your_database_name
+      MYSQL_USER: your_mysql_username
+      MYSQL_PASSWORD: your_mysql_password
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"  # Expose MySQL port
+
+volumes:
+  db_data:  # Persist MySQL data between restarts
