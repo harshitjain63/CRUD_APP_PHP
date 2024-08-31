@@ -5,6 +5,8 @@ FROM php:8.1-apache
 RUN docker-php-ext-install mysqli pdo pdo_mysql && \
     docker-php-ext-enable mysqli
 
+RUN echo "ServerName 206.1.53.92" >> /etc/apache2/apache2.conf
+
 # Set working directory inside the container
 WORKDIR /var/www/html
 
